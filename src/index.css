@@ -6,7 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display: grid;
   place-items: center;
-  background: linear-gradient(to right, #ff9999, #a2a1ff);
+  background: linear-gradient(to right, #c0f7f4, #2ad9fc);
 }
 
 h1 {
