@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 export default function Calendar({ date }: { date: string }): JSX.Element {
-  const [tableHeading, setTableHeading] = useState<string>("");
+  const [calendarHeading, setCalendarHeading] = useState<string>("");
+  const [calendarBody, setCalendarBody] = useState<number[][]>();
 
   const getMonthAndYear = (year: string, month: string): string => {
     let dateObject = new Date(parseInt(year), parseInt(month) - 1); //month starts from 0
@@ -14,16 +15,43 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
     return monthAndYear;
   };
 
+  const getWeekWiseDates = (year: string, month: string): number[][] => {
+    let allDates: number[] = [];
+    let weekWiseDates: number[][] = [];
+
+    let startDay = new Date(parseInt(year), parseInt(month) - 1).getDay();
+    let lastDate = new Date(parseInt(year), parseInt(month), 0).getDate();
+
+    for (let startDate = 1; startDate <= lastDate; startDate++) {
+      allDates.push(startDate);
+    }
+
+    //Insert 0 for other days before first day
+    for (let i = 0; i < startDay; i++) {
+      allDates.unshift(0);
+    }
+    console.log(allDates);
+
+    //Create 2d array of 7 cols each
+    while (allDates.length) {
+      weekWiseDates.push(allDates.splice(0, 7));
+    }
+    console.log(weekWiseDates);
+
+    return weekWiseDates;
+  };
+
   useEffect(() => {
     const [dd, mm, yyyy] = date.split("/");
-    setTableHeading(getMonthAndYear(yyyy, mm));
+    setCalendarHeading(getMonthAndYear(yyyy, mm));
+    setCalendarBody(getWeekWiseDates(yyyy, mm));
   }, [date]);
 
   return (
     <table>
       <thead>
         <tr>
-          <th colSpan={7}>{tableHeading}</th>
+          <th colSpan={7}>{calendarHeading}</th>
         </tr>
         <tr>
           <th>Su</th>
@@ -36,24 +64,13 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-          <td>6</td>
-          <td>7</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>9</td>
-          <td>10</td>
-          <td>11</td>
-          <td>12</td>
-          <td>13</td>
-          <td>14</td>
-        </tr>
+        {calendarBody?.map((weeks) => (
+          <tr>
+            {weeks.map((day) => (
+              <td>{day}</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
