@@ -2,9 +2,11 @@ export default function CalendarHeading({ heading }: { heading: string | null })
   return (
     <thead>
       <tr>
-        <th colSpan={7}>{heading}</th>
+        <th className="calendar-month-year" colSpan={7}>
+          {heading}
+        </th>
       </tr>
-      <tr>
+      <tr className="calendar-weeks">
         <th>Su</th>
         <th>Mo</th>
         <th>Tu</th>

@@ -69,7 +69,7 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
       <CalendarHeading heading={calendarHeading} />
       <tbody>
         {calendarBody?.map((weeks, index) => (
-          <tr key={index}>
+          <tr className="calendar-days" key={index}>
             {weeks.map((day) =>
               //show only if day is not zero
               day ? (
