@@ -1,4 +1,4 @@
-export default function CalendarHeading({ heading }: { heading: string }): JSX.Element {
+export default function CalendarHeading({ heading }: { heading: string | null }): JSX.Element {
   return (
     <thead>
       <tr>

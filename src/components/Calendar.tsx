@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CalendarHeading from "./CalendarHeading";
 
 export default function Calendar({ date }: { date: string }): JSX.Element {
-  const [calendarHeading, setCalendarHeading] = useState<string>("");
+  const [calendarHeading, setCalendarHeading] = useState<string | null>("");
   const [calendarBody, setCalendarBody] = useState<number[][]>();
   const [activeDate, setActiveDate] = useState<number>();
 
@@ -43,14 +43,30 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
     return weekWiseDates;
   };
 
+  const isValidDate = (date: string, month: string, year: string): boolean => {
+    let lastDateOfMonth: number;
+    lastDateOfMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
+
+    if (
+      parseInt(date) < 1 ||
+      parseInt(date) > lastDateOfMonth ||
+      parseInt(month) < 1 ||
+      parseInt(month) > 12
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     const [dd, mm, yyyy] = date.split("/");
+    if (!isValidDate(dd, mm, yyyy)) return setCalendarHeading(null);
     setCalendarHeading(getMonthAndYear(yyyy, mm));
     setCalendarBody(getWeekWiseDates(yyyy, mm));
     setActiveDate(parseInt(dd));
   }, [date]);
 
-  return (
+  return calendarHeading ? (
     <table>
       <CalendarHeading heading={calendarHeading} />
       <tbody>
@@ -68,5 +84,7 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
         ))}
       </tbody>
     </table>
+  ) : (
+    <h1>Invalid Date given</h1>
   );
 }
