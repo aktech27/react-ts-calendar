@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CalendarHeading from "./CalendarHeading";
 
 export default function Calendar({ date }: { date: string }): JSX.Element {
   const [calendarHeading, setCalendarHeading] = useState<string>("");
@@ -51,20 +52,7 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
 
   return (
     <table>
-      <thead>
-        <tr>
-          <th colSpan={7}>{calendarHeading}</th>
-        </tr>
-        <tr>
-          <th>Su</th>
-          <th>Mo</th>
-          <th>Tu</th>
-          <th>We</th>
-          <th>Th</th>
-          <th>Fr</th>
-          <th>Sa</th>
-        </tr>
-      </thead>
+      <CalendarHeading heading={calendarHeading} />
       <tbody>
         {calendarBody?.map((weeks) => (
           <tr>
