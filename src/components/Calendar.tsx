@@ -32,13 +32,11 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
     for (let i = 0; i < startDay; i++) {
       allDates.unshift(0);
     }
-    console.log(allDates);
 
     //Create 2d array of 7 cols each
     while (allDates.length) {
       weekWiseDates.push(allDates.splice(0, 7));
     }
-    console.log(weekWiseDates);
 
     return weekWiseDates;
   };
@@ -70,14 +68,16 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
     <table>
       <CalendarHeading heading={calendarHeading} />
       <tbody>
-        {calendarBody?.map((weeks) => (
-          <tr>
+        {calendarBody?.map((weeks, index) => (
+          <tr key={index}>
             {weeks.map((day) =>
               //show only if day is not zero
               day ? (
-                <td className={day === activeDate ? "date active" : "date"}>{day}</td>
+                <td key={day} className={day === activeDate ? "date active" : "date"}>
+                  {day}
+                </td>
               ) : (
-                <td className="no-date"></td>
+                <td key={Math.random()} className="no-date"></td>
               )
             )}
           </tr>
