@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export default function Calendar({ date }: { date: string }): JSX.Element {
   const [calendarHeading, setCalendarHeading] = useState<string>("");
   const [calendarBody, setCalendarBody] = useState<number[][]>();
+  const [activeDate, setActiveDate] = useState<number>();
 
   const getMonthAndYear = (year: string, month: string): string => {
     let dateObject = new Date(parseInt(year), parseInt(month) - 1); //month starts from 0
@@ -45,6 +46,7 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
     const [dd, mm, yyyy] = date.split("/");
     setCalendarHeading(getMonthAndYear(yyyy, mm));
     setCalendarBody(getWeekWiseDates(yyyy, mm));
+    setActiveDate(parseInt(dd));
   }, [date]);
 
   return (
@@ -66,9 +68,14 @@ export default function Calendar({ date }: { date: string }): JSX.Element {
       <tbody>
         {calendarBody?.map((weeks) => (
           <tr>
-            {weeks.map((day) => (
-              <td>{day}</td>
-            ))}
+            {weeks.map((day) =>
+              //show only if day is not zero
+              day ? (
+                <td className={day === activeDate ? "date active" : "date"}>{day}</td>
+              ) : (
+                <td className="no-date"></td>
+              )
+            )}
           </tr>
         ))}
       </tbody>
